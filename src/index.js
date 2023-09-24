@@ -1,6 +1,7 @@
 const express = require("express")
 const cors = require("cors")
 const routes = require("./routes/routes")
+const yup = require("./services/TranslationsYup")
 require("dotenv").config()
 
 module.exports = new (class App {
