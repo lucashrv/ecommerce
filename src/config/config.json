@@ -1,0 +1,24 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "",
+    "database": "Ecommerce",
+    "host": "localhost",
+    "dialect": "postgres",
+    "logging": false
+  },
+  "test": {
+    "username": null,
+    "password": null,
+    "database": null,
+    "host": null,
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": null,
+    "password": null,
+    "database": null,
+    "host": null,
+    "dialect": "postgres"
+  }
+}
