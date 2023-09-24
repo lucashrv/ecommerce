@@ -1,12 +1,22 @@
 const yup = require("../services/TranslationsYup")
 
-const userSchema = ({
+const userRegisterSchema = ({
     body: yup.object({
         name: yup.string(50).required(),
-        email: yup.string().email().required(),
-        password: yup.string().required().min(6).max(15),
+        email: yup.string(50).email().required(),
+        password: yup.string().required(),
         role: yup.string(10).required()
     })
 })
 
-module.exports = userSchema
+const userLoginSchema = ({
+    body: yup.object({
+        email: yup.string(50).email().required(),
+        password: yup.string().required()
+    })
+})
+
+module.exports = {
+    userRegisterSchema,
+    userLoginSchema
+}

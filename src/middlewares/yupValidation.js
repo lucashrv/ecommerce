@@ -1,8 +1,8 @@
 const yupValidation = (allSchemas) => async (req, res, next) => {
 
-    // const body = req.body
-
     const errorsResult = {}
+
+    // const body = req.body
 
     // try {
     //     await schema.validate(body)

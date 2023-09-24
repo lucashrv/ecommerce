@@ -1,7 +1,8 @@
 const { Router } = require("express")
 const UserController = require("../controllers/UserController")
 const yupValidation = require("../middlewares/yupValidation")
-const userSchema = require("../schemas/userSchema")
+const { userRegisterSchema, userLoginSchema } = require("../schemas/userSchema")
+const validateToken = require("../middlewares/validateToken")
 
 class UserRoute {
     constructor () {
@@ -11,11 +12,20 @@ class UserRoute {
     }
 
     setup () {
-        this.routes.get("/get", this.userController.get)
         this.routes.post(
-            "/post",
-            yupValidation(userSchema),
-            this.userController.create
+            "/user/register",
+            yupValidation(userRegisterSchema),
+            this.userController.register
+        )
+        this.routes.post(
+            "/user/login",
+            yupValidation(userLoginSchema),
+            this.userController.login
+        )
+        this.routes.get(
+            "/user/:id",
+            validateToken,
+            this.userController.findUser
         )
 
         return this.routes
