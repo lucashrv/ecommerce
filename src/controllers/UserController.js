@@ -31,7 +31,7 @@ class UserController {
 
             return res.status(201).json({
                 message: "Usuário criado com sucesso",
-                body: { ...create, password: "not visible" }
+                body: { ...create, password: "" }
             })
 
         } catch (error) {

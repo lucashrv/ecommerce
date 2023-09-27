@@ -4,7 +4,7 @@ const yupValidation = require("../middlewares/yupValidation")
 const { userRegisterSchema, userLoginSchema } = require("../schemas/userSchema")
 const validateToken = require("../middlewares/validateToken")
 
-class UserRoute {
+class UsersRoute {
     constructor () {
         this.routes = Router()
 
@@ -32,4 +32,4 @@ class UserRoute {
     }
 }
 
-module.exports = UserRoute
+module.exports = UsersRoute
