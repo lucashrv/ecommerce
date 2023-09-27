@@ -1,7 +1,11 @@
 const { Router } = require("express")
 const CategoriesController = require("../controllers/CategoriesController")
 const yupValidation = require("../middlewares/yupValidation")
-const { categoriesSchema } = require("../schemas/categoriesSchema")
+const {
+    categoriesSchema,
+    categoriesIdSchema,
+    categoriesFullSchema
+} = require("../schemas/categoriesSchema")
 const validateToken = require("../middlewares/validateToken")
 
 class CategoriesRouter {
@@ -26,12 +30,13 @@ class CategoriesRouter {
         this.routes.put(
             "/categories/:id",
             validateToken,
-            yupValidation(categoriesSchema),
+            yupValidation(categoriesFullSchema),
             this.categoriesController.update
         )
         this.routes.delete(
             "/categories/:id",
             validateToken,
+            yupValidation(categoriesIdSchema),
             this.categoriesController.destroy
         )
 

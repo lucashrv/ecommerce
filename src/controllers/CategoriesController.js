@@ -1,7 +1,7 @@
 const { categories } = require("../models")
 
 class CategoriesController {
-    async create(req, res) {
+    async create (req, res) {
         const { name } = req.body
 
         const nameExists = await categories.findOne({ where: { name } })
@@ -23,7 +23,7 @@ class CategoriesController {
         }
     }
 
-    async update(req, res) {
+    async update (req, res) {
         const { id } = req.params
         const { name } = req.body
 
@@ -37,9 +37,9 @@ class CategoriesController {
             await categories.update({
                 name
             },
-                {
-                    where: { id }
-                })
+            {
+                where: { id }
+            })
 
             return res.status(200).json({
                 message: "Categoria atualizada",
@@ -56,7 +56,7 @@ class CategoriesController {
         }
     }
 
-    async getAll(req, res) {
+    async getAll (req, res) {
         try {
             const getAll = await categories.findAll()
 
@@ -69,12 +69,12 @@ class CategoriesController {
         }
     }
 
-    async destroy(req, res) {
+    async destroy (req, res) {
         const { id } = req.params
 
         const idExist = await categories.findByPk(id, { raw: true })
 
-        if (!idExist) return res.status(404).json({ message: "id não encontrado" })
+        if (!id || !idExist) return res.status(404).json({ message: "id não encontrado" })
 
         try {
             await categories.destroy({ where: { id } })
