@@ -8,12 +8,12 @@ module.exports = new (class App {
     constructor() {
         this.app = express()
 
-        this.midlewares()
+        this.middlewares()
 
         this.routes()
     }
 
-    midlewares() {
+    middlewares() {
         this.app.use(cors())
 
         this.app.use(express.json({ limit: "100mb" }))

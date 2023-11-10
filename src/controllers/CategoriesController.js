@@ -1,93 +1,47 @@
 const { categories } = require("../models")
+const categoriesServices = require("../services/categoriesServices")
 
 class CategoriesController {
-    async create (req, res) {
-        const { name } = req.body
 
-        const nameExists = await categories.findOne({ where: { name } })
-
-        if (nameExists) return res.status(422).json({ message: "Nome já cadastrado" })
-
+    async create(req, res) {
         try {
-            const create = await categories.create({ name })
+            const category = await categoriesServices.create(req.body)
 
-            return res.status(201).json({
-                message: "Categoria criada",
-                body: { ...create.dataValues }
-            })
-        } catch (error) {
-            return res.status(500).json({
-                message: "Erro interno",
-                error: error.message
-            })
+            res.status(200).json(category)
+        } catch (err) {
+            res.status(500).json({ error: err.message })
         }
     }
 
-    async update (req, res) {
-        const { id } = req.params
-        const { name } = req.body
-
-        const idExits = await categories.findByPk(id)
-        const nameExits = await categories.findOne({ where: { name } })
-
-        if (!idExits) return res.status(404).json({ message: "id não encontrado" })
-        if (nameExits) return res.status(404).json({ message: "Nome já existe" })
-
+    async getAll(req, res) {
         try {
-            await categories.update({
-                name
-            },
-            {
-                where: { id }
-            })
+            const findAll = await categoriesServices.getAll()
 
-            return res.status(200).json({
-                message: "Categoria atualizada",
-                body: {
-                    id,
-                    ...req.body
-                }
-            })
-        } catch (error) {
-            return res.status(500).json({
-                message: 'Erro interno',
-                error: error.message
-            })
+            res.status(200).json(findAll)
+        } catch (err) {
+            res.status(500).json(err)
         }
     }
 
-    async getAll (req, res) {
+    async update(req, res) {
         try {
-            const getAll = await categories.findAll()
+            const updatedCategory = await categoriesServices.update(req)
 
-            return res.status(200).json({ body: getAll })
-        } catch (error) {
-            res.status(500).json({
-                message: "Erro interno",
-                error: error.message
-            })
+            return res.status(200).json(updatedCategory)
+        } catch (err) {
+            res.status(500).json({ error: err.message })
         }
     }
 
-    async destroy (req, res) {
-        const { id } = req.params
-
-        const idExist = await categories.findByPk(id, { raw: true })
-
-        if (!id || !idExist) return res.status(404).json({ message: "id não encontrado" })
-
+    async destroy(req, res) {
         try {
-            await categories.destroy({ where: { id } })
+            await categoriesServices.destroy(req.params)
 
-            return res.status(200).json({
-                message: "Categoria deletada",
-                body: { ...idExist }
+            res.status(200).json({
+                "Categoria deletada(id)": req.params.id
             })
-        } catch (error) {
-            return res.status(500).json({
-                message: "Erro interno",
-                error: error.message
-            })
+        } catch (err) {
+            return res.status(500).json({ error: err.message })
         }
     }
 }

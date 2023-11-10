@@ -46,9 +46,9 @@ class UserController {
         const { email, password } = req.body
 
         const user = await users.findOne({ where: { email } })
-        const checkPassword = await bcrypt.compare(password, user.password)
-
         if (!user) return res.status(404).json({ message: "Usuário não encontrado" })
+
+        const checkPassword = await bcrypt.compare(password, user.password)
         if (!checkPassword) return res.status(422).json({ message: "Senha inválida" })
 
         const secret = process.env.SECRET
