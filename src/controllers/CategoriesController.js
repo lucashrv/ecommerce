@@ -1,4 +1,4 @@
-const { categories } = require("../models")
+// const { categories } = require("../models")
 const categoriesServices = require("../services/categoriesServices")
 
 class CategoriesController {
@@ -7,7 +7,7 @@ class CategoriesController {
         try {
             const category = await categoriesServices.create(req.body)
 
-            res.status(200).json(category)
+            res.status(201).json(category)
         } catch (err) {
             res.status(500).json({ error: err.message })
         }

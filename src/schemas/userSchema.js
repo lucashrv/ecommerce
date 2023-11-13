@@ -5,7 +5,7 @@ const userRegisterSchema = ({
         name: yup.string(50).required().min(3).max(50),
         email: yup.string(50).email().required().min(3).max(50),
         password: yup.string().required().min(3),
-        role: yup.string(10).required().min(3).max(10)
+        confirmPassword: yup.string().required().min(3)
     })
 })
 
@@ -16,7 +16,30 @@ const userLoginSchema = ({
     })
 })
 
+const userPassSchema = ({
+    body: yup.object({
+        currentPassword: yup.string().required().min(3),
+        newPassword: yup.string().required().min(3),
+        confirmPassword: yup.string().required().min(3)
+    })
+})
+
+const userNameSchema = ({
+    body: yup.object({
+        name: yup.string(50).required().min(3).max(50)
+    })
+})
+
+const userIdSchema = ({
+    params: yup.object({
+        id: yup.number().integer().positive().required()
+    })
+})
+
 module.exports = {
     userRegisterSchema,
-    userLoginSchema
+    userLoginSchema,
+    userPassSchema,
+    userNameSchema,
+    userIdSchema
 }

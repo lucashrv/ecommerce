@@ -5,52 +5,46 @@ const {
     handleSearchAll,
     handleCreate,
     handleDestroy,
-    handleError,
-    handleVerifyReturned,
-    handleSearch,
+    handleError
 } = require("./handleServices/handleUtils");
 
-const create = async (body) => {
-    const { name } = body
+module.exports = new (class CategoryService {
+    async create (body) {
+        const { name } = body
 
-    const searchCategory = await handleSearchAll(categories, { name })
+        const searchCategory = await handleSearchAll(categories, { name })
 
-    handleError(searchCategory.length, "Categoria já existente!")
+        handleError(searchCategory.length, "Categoria já existente!")
 
-    return handleCreate(categories, body)
-}
+        return handleCreate(categories, body)
+    }
 
-const getAll = async () => {
-    return handleSearchAll(categories)
-}
+    async getAll() {
+        return handleSearchAll(categories)
+    }
 
-const update = async (req) => {
-    const { id } = req.params
-    const { name } = req.body
+    async update(req) {
+        const { id } = req.params
+        const { name } = req.body
 
-    const category = await handleSearchOne(categories, id)
-    handleError(!category, "Categoria inexistente")
+        const category = await handleSearchOne(categories, id)
+        handleError(!category, "Categoria inexistente")
 
-    const searchName = await handleSearchAll(categories, { name })
-    handleError(searchName.length, "Nome já cadastrado")
+        const searchName = await handleSearchAll(categories, { name })
+        handleError(searchName.length, "Nome já cadastrado")
 
-    await categories.update({ ...req.body }, { where: { id } })
+        await categories.update({ ...req.body }, { where: { id } })
 
-    return { id, ...req.body }
-}
+        return { id, ...req.body }
+    }
 
-const destroy = async (params) => {
-    const { id } = params
+    async destroy(params) {
+        const { id } = params
 
-    const category = await handleSearchOne(categories, id)
-    handleError(!category, "Categoria inexistente")
+        const category = await handleSearchOne(categories, id)
+        handleError(!category, "Categoria inexistente")
 
-    return await handleDestroy(categories, { id })
-}
+        return await handleDestroy(categories, { id })
+    }
 
-module.exports = {
-    getAll,
-    create,
-    update,
-    destroy
-}
+})

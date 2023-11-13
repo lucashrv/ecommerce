@@ -1,73 +1,28 @@
-const { users } = require("../models")
-const bcrypt = require("bcrypt")
-const jwt = require("jsonwebtoken")
+const usersServices = require("../services/usersServices")
 
 class UserController {
 
     async register(req, res) {
-        const {
-            name,
-            email,
-            password,
-            role
-        } = req.body
-
-        const userExists = await users.findOne({ where: { email } })
-
-        if (userExists) return res.status(422).json({ message: "Email já cadastrado" })
-
-        const salt = await bcrypt.genSalt(12)
-
-        const hash = await bcrypt.hash(password, salt)
-
         try {
+            const user = await usersServices.register(req.body)
+            user["password"] = undefined
 
-            const create = await users.create({
-                name,
-                email,
-                password: hash,
-                role
-            })
-
-            return res.status(201).json({
-                message: "Usuário criado com sucesso",
-                body: { ...create, password: "" }
-            })
-
-        } catch (error) {
-            return res.status(500).json({
-                message: "Erro interno",
-                error: error.message
-            })
+            res.status(201).json(user)
+        } catch (err) {
+            res.status(500).json({ error: err.message })
         }
     }
 
     async login(req, res) {
-        const { email, password } = req.body
-
-        const user = await users.findOne({ where: { email } })
-        if (!user) return res.status(404).json({ message: "Usuário não encontrado" })
-
-        const checkPassword = await bcrypt.compare(password, user.password)
-        if (!checkPassword) return res.status(422).json({ message: "Senha inválida" })
-
-        const secret = process.env.SECRET
-
         try {
-            const token = jwt.sign({
-                id: user.id
-            }, secret)
+            const token = await usersServices.login(req.body)
 
-            return res.status(200).json({
+            res.status(200).json({
                 message: "Autenticado com sucesso",
                 token
             })
-
-        } catch (error) {
-            res.status(500).json({
-                message: "Erro interno",
-                error: error.message
-            })
+        } catch (err) {
+            res.status(500).json({ error: err.message })
         }
     }
 
@@ -75,19 +30,42 @@ class UserController {
         const { id } = req.params
 
         try {
-            const user = await users.findOne({
-                where: { id },
-                attributes: { exclude: ["password"] }
-            })
+            const user = await usersServices.getUser(id)
+            user["password"] = undefined
 
-            if (!user) return res.status(404).json({ message: "Usuário não encontrado" })
+            res.status(200).json(user)
+        } catch (err) {
+            res.status(500).json({ error: err.message })
+        }
+    }
 
-            return res.status(200).json({ body: user })
-        } catch (error) {
-            return res.status(500).json({
-                message: "Erro interno",
-                error: error.message
-            })
+    async changePassword(req, res) {
+        try {
+            await usersServices.changePassword(req)
+
+            res.status(200).json({ message: "Senha alterada" })
+        } catch (err) {
+            res.status(500).json({ error: err.message })
+        }
+    }
+
+    async changeName(req, res) {
+        try {
+            await usersServices.changeName(req)
+
+            return res.status(200).json({ message: "Nome alterado" })
+        } catch (err) {
+            return res.status(500).json({ error: err.message })
+        }
+    }
+
+    async destroy(req, res) {
+        try {
+            await usersServices.destroy(req)
+
+            return res.status(200).json({ message: "Usuário deletado" })
+        } catch (err) {
+            return res.status(500).json({ error: err.message })
         }
     }
 }
