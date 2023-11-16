@@ -1,44 +1,48 @@
 const { Router } = require("express")
 const ProductsController = require("../controllers/ProductsController")
 const yupValidation = require("../middlewares/yupValidation")
-// const {  } = require("../schemas/categoriesSchema")
+const { productsSchema, idSchema } = require("../schemas/productsSchema")
 const validateToken = require("../middlewares/validateToken")
+const adminVerify = require("../middlewares/adminVerify")
 
-class ProductsRouter {
-    constructor () {
+class ProductsRoute {
+    constructor() {
         this.routes = Router()
 
         this.productsController = new ProductsController()
     }
 
-    setup () {
+    setup() {
+        //Public
+        this.routes.get(
+            "/products",
+            this.productsController.getAll
+        )
+        //Private for admins
         this.routes.post(
             "/products",
             validateToken,
-            yupValidation(),
+            adminVerify,
+            yupValidation(productsSchema),
             this.productsController.create
-            )
-        this.routes.get(
-            "/products",
-            validateToken,
-            yupValidation(),
-            this.productsController.getAll
-            )
+        )
         this.routes.put(
             "/products/:id",
             validateToken,
-            yupValidation(),
+            adminVerify,
+            yupValidation(productsSchema),
             this.productsController.update
-            )
+        )
         this.routes.delete(
             "/products/:id",
             validateToken,
-            yupValidation(),
+            adminVerify,
+            yupValidation(idSchema),
             this.productsController.destroy
-            )
+        )
 
-        this.routes
+        return this.routes
     }
 }
 
-module.exports = ProductsRouter
+module.exports = ProductsRoute

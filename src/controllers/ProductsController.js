@@ -1,115 +1,46 @@
-const { Products } = require("../models/Products")
+const productsServices = require("../services/productsServices")
 
-class Products {
-    async create (req, res) {
-        const {
-            name,
-            description,
-            price,
-            amount,
-            image,
-            category_id
-        } = req.body
+class ProductController {
 
+    async create(req, res) {
         try {
-            const create = await Products.create({
-                name,
-                description,
-                price,
-                amount,
-                image,
-                category_id
-            })
+            const product = await productsServices.create(req)
 
-            return res.status(201).json({
-                message: "Produto criado",
-                body: { ...create.dataValues }
-            })
-        } catch (error) {
-            return res.status(500).json({
-                message: "Erro interno",
-                error: error.message
-            })
+            res.status(201).json(product)
+        } catch (err) {
+            res.status(500).json({ error: err.message })
         }
     }
 
-    async getAll (req, res) {
+    async getAll(req, res) {
         try {
-            const getAll = await Products.findAll()
+            const findAll = await productsServices.getAll()
 
-            return res.status(200).json(getAll)
-        } catch (error) {
-            return res.status(500).json({
-                message: "Erro interno",
-                error: error.message
-            })
+            res.status(200).json(findAll)
+        } catch (err) {
+            res.status(500).json(err)
         }
     }
 
-    async update (req, res) {
-        const { id } = req.params
-        const {
-            name,
-            description,
-            price,
-            amount,
-            image,
-            category_id
-        } = req.body
-
-        const idExists = await Products.findByPk(id, { raw: true })
-
-        if (!idExists) return res.status(404).json({ message: "id não encontrado" })
-
+    async update(req, res) {
         try {
-            await Products.update({
-                name,
-                description,
-                price,
-                amount,
-                image,
-                category_id
-            },
-            {
-                where: { id }
-            })
+            const update = await productsServices.update(req)
 
-            return res.status(200).json({
-                message: "Produto atualizado",
-                body: {
-                    id,
-                    ...req.body
-                }
-            })
-        } catch (error) {
-            return res.status(500).json({
-                message: "Erro interno",
-                error: error.message
-            })
+            res.status(200).json(update)
+        } catch (err) {
+            res.status(500).json({ error: err.message })
         }
     }
 
-    async destroy (req, res) {
-        const { id } = req.params
-
-        const idExists = await Products.findByPk(id, { raw: true })
-
-        if (!idExists) return res.status(404).json({ message: "id não encontrado" })
-
+    async destroy(req, res) {
         try {
-            await Products.destroy({ where: { id } })
+            const destroy = await productsServices.destroy(req)
 
-            return res.status(200).json({
-                message: "Produto deletado",
-                body: { ...idExists }
-            })
-        } catch (error) {
-            return res.status(500).json({
-                message: "Erro interno",
-                error: error.message
-            })
+            return res.status(200).json(destroy)
+        } catch (err) {
+            return res.status(500).json({ error: err.message })
         }
     }
 }
 
-module.exports = Products
+module.exports = ProductController

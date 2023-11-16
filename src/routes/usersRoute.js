@@ -19,6 +19,7 @@ class UsersRoute {
     }
 
     setup () {
+        //Public
         this.routes.post(
             "/user/register",
             yupValidation(userRegisterSchema),
@@ -29,28 +30,30 @@ class UsersRoute {
             yupValidation(userLoginSchema),
             this.userController.login
         )
-
-        this.routes.use(validateToken)
-
-        this.routes.get(
-            "/user/:id",
-            this.userController.findUser
-        )
+        //Private for all users and admins
         this.routes.patch(
             "/user",
+            validateToken,
             yupValidation(userPassSchema),
             this.userController.changePassword
         )
         this.routes.patch(
             "/user/changeName",
+            validateToken,
             yupValidation(userNameSchema),
             this.userController.changeName
         )
-
-        this.routes.use(adminVerify)
-
+        //Private for admins
+        this.routes.get(
+            "/user/:id",
+            validateToken,
+            adminVerify,
+            this.userController.findUser
+        )
         this.routes.delete(
             "/user/:id",
+            validateToken,
+            adminVerify,
             yupValidation(userIdSchema),
             this.userController.destroy
         )
