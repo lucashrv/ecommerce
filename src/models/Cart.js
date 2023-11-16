@@ -10,12 +10,16 @@ module.exports = (sequelize, DataTypes) => {
          * The `models/index` file will call this method automatically.
         */
         static associate(models) {
+            this.belongsTo(models.users, { foreignKey: "user_id" }),
+            this.belongsTo(models.products, { foreignKey: "product_id" })
         }
     }
 
     Carts.init(
         {
-            name: { type: DataTypes.STRING(20), allowNull: false }
+            quantity: { type: DataTypes.INTEGER(6), allowNull: false },
+            unity_price: { type: DataTypes.DECIMAL(10, 2), allowNull: false },
+            full_price: { type: DataTypes.DECIMAL(10, 2), allowNull: false }
         },
         {
             sequelize,

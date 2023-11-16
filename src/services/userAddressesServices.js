@@ -32,32 +32,27 @@ module.exports = new (class UserService {
         })
     }
 
-    // async update(req) {
-    //     const { id } = req.params
-    //     const { category_id } = req.body
+    async update(req) {
+        const { id } = req.params
 
-    //     const product = await handleSearchOne(products, id)
-    //     handleError(!product, "Produto inexistente")
+        const address = await handleSearchOne(user_addresses, id)
+        handleError(!address, "Endereço inexistente")
 
-    //     const category = await handleSearchOne(categories, category_id)
-    //     handleError(!category, "Categoria inexistente")
+        await user_addresses.update({
+            ...req.body,
+        }, { where: { id } })
 
-    //     await products.update({
-    //         ...req.body,
-    //         user_id: req.connectedUser.id
-    //     }, { where: { id } })
+        return { ...req.body }
+    }
 
-    //     return { ...product, ...req.body, user_id: req.connectedUser.id }
-    // }
+    async destroy(req) {
+        const { id } = req.params
 
-    // async destroy(req) {
-    //     const { id } = req.params
+        const address = await handleSearchOne(user_addresses, id)
+        handleError(!address, "Endereço inexistente")
 
-    //     const product = await handleSearchOne(products, id)
-    //     handleError(!product, "Usuário inexistente")
+        await handleDestroy(user_addresses, { id })
 
-    //     await handleDestroy(products, { id })
-
-    //     return { "Produto deletado": { ...product } }
-    // }
+        return { "Produto deletado": { ...address } }
+    }
 })

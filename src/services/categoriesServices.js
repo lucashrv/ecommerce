@@ -44,7 +44,9 @@ module.exports = new (class CategoryService {
         const category = await handleSearchOne(categories, id)
         handleError(!category, "Categoria inexistente")
 
-        return await handleDestroy(categories, { id })
+        await handleDestroy(categories, { id })
+
+        return { "Categoria deletada": { ...category } }
     }
 
 })

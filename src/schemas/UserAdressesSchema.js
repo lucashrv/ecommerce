@@ -13,6 +13,13 @@ const userAddressesSchema = ({
     })
 })
 
+const idSchema = ({
+    params: yup.object({
+        id: yup.number().positive().moreThan(0).required()
+    })
+})
+
 module.exports = {
-    userAddressesSchema
+    userAddressesSchema,
+    idSchema
 }

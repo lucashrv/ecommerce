@@ -1,7 +1,7 @@
 const { Router } = require("express")
 const UserAddressesController = require("../controllers/UserAddressesController")
 const yupValidation = require("../middlewares/yupValidation")
-const { userAddressesSchema } = require("../schemas/UserAdressesSchema")
+const { userAddressesSchema, idSchema } = require("../schemas/UserAdressesSchema")
 const validateToken = require("../middlewares/validateToken")
 const adminVerify = require("../middlewares/adminVerify")
 
@@ -26,19 +26,17 @@ class UserAddressesRoute {
             this.userAddressesController.getOneAddresses
         )
         this.routes.put(
-            "/products/:id",
+            "/userAdresses/:id",
             validateToken,
-            adminVerify,
-            yupValidation(productsSchema),
-            this.productsController.update
+            yupValidation(userAddressesSchema),
+            this.userAddressesController.update
         )
-        // this.routes.delete(
-        //     "/products/:id",
-        //     validateToken,
-        //     adminVerify,
-        //     yupValidation(idSchema),
-        //     this.productsController.destroy
-        // )
+        this.routes.delete(
+            "/userAdresses/:id",
+            validateToken,
+            yupValidation(idSchema),
+            this.userAddressesController.destroy
+        )
 
         return this.routes
     }

@@ -24,7 +24,7 @@ class UserAddressesController {
 
     async update(req, res) {
         try {
-            const update = await productsServices.update(req)
+            const update = await userAddressesServices.update(req)
 
             res.status(200).json(update)
         } catch (err) {
@@ -34,7 +34,7 @@ class UserAddressesController {
 
     async destroy(req, res) {
         try {
-            const destroy = await productsServices.destroy(req)
+            const destroy = await userAddressesServices.destroy(req)
 
             return res.status(200).json(destroy)
         } catch (err) {
