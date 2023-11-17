@@ -21,7 +21,7 @@ class UserAddressesRoute {
             this.userAddressesController.create
         )
         this.routes.get(
-            "/userAdresses/:id?",
+            "/userAdresses/:id",
             validateToken,
             this.userAddressesController.getOneAddresses
         )

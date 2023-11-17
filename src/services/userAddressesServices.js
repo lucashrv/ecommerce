@@ -9,7 +9,7 @@ const {
     handleSearch,
 } = require("./handleServices/handleUtils")
 
-module.exports = new (class UserService {
+module.exports = new (class UserAddressesService {
     async create(req) {
         handleError(!req.connectedUser.id, "Usuário não conectado")
 
@@ -18,12 +18,19 @@ module.exports = new (class UserService {
             user_id: req.connectedUser.id
         })
     }
-    // Get one user all addresses or get current user addresses
+    // Get one user all addresses
     async getOneAddresses(req) {
         const { id } = req.params
+        const { id: userId } = req.connectedUser
 
         const user = await handleSearchOne(users, id)
+        const currentUser = await handleSearchOne(users, userId)
+
         handleError(id && !user, "Usuário não encontrado")
+        handleError(
+            +id !== +userId && currentUser.role !== "admin",
+            "Somente o próprio usuário ou admins possuem acesso"
+        )
 
         const searchId = id ? id : req.connectedUser.id
 
@@ -34,9 +41,17 @@ module.exports = new (class UserService {
 
     async update(req) {
         const { id } = req.params
+        const { id: userId } = req.connectedUser
+
+        const currentUser = await handleSearchOne(users, userId)
 
         const address = await handleSearchOne(user_addresses, id)
         handleError(!address, "Endereço inexistente")
+
+        handleError(
+            +id !== +userId && currentUser.role !== "admin",
+            "Somente o próprio usuário ou admins possuem acesso"
+        )
 
         await user_addresses.update({
             ...req.body,
@@ -47,9 +62,17 @@ module.exports = new (class UserService {
 
     async destroy(req) {
         const { id } = req.params
+        const { id: userId } = req.connectedUser
+
+        const currentUser = await handleSearchOne(users, userId)
 
         const address = await handleSearchOne(user_addresses, id)
         handleError(!address, "Endereço inexistente")
+
+        handleError(
+            +id !== +userId && currentUser.role !== "admin",
+            "Somente o próprio usuário ou admins possuem acesso"
+        )
 
         await handleDestroy(user_addresses, { id })
 

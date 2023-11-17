@@ -5,6 +5,7 @@ const users = require("./usersRoute")
 const categories = require("./categoriesRoute")
 const products = require("./productsRoute")
 const userAddresses = require("./userAddressesRoute")
+const carts = require("./cartsRoute")
 
 class IndexRoutes {
     constructor () {
@@ -14,6 +15,7 @@ class IndexRoutes {
         this.categories = new categories()
         this.products = new products()
         this.userAddresses = new userAddresses()
+        this.carts = new carts()
     }
 
     setup () {
@@ -21,6 +23,7 @@ class IndexRoutes {
         this.routes.use("/api", this.categories.setup());
         this.routes.use("/api", this.products.setup());
         this.routes.use("/api", this.userAddresses.setup());
+        this.routes.use("/api", this.carts.setup());
 
         return this.routes
     }

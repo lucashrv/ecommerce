@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
 
     Carts.init(
         {
-            quantity: { type: DataTypes.INTEGER(6), allowNull: false },
+            quantity: { type: DataTypes.INTEGER(), allowNull: false },
             unity_price: { type: DataTypes.DECIMAL(10, 2), allowNull: false },
             full_price: { type: DataTypes.DECIMAL(10, 2), allowNull: false }
         },
