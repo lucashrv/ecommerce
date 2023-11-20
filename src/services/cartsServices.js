@@ -17,7 +17,7 @@ module.exports = new (class CartsService {
         const product = await handleSearchOne(products, product_id)
         const cart = await handleSearch(carts, { user_id: userId, product_id })
 
-        handleError(cart, "Este produto já está no carrinho")
+        handleError(cart, "Já existe um carrinho com este produto")
         handleError(!product, "Produto não encontrado")
         handleError(
             quantity > product.amount,
@@ -96,6 +96,6 @@ module.exports = new (class CartsService {
 
         await handleDestroy(carts, { id })
 
-        return { "Produto deletado": { ...cart } }
+        return { "Carrinho deletado": { ...cart } }
     }
 })
