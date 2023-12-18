@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
     PaymentType.init(
         {
             name: { type: DataTypes.STRING(50), allowNull: false },
-            number: { type: DataTypes.INTEGER(), allowNull: false },
+            number: { type: DataTypes.BIGINT(), allowNull: false },
             code: { type: DataTypes.INTEGER(), allowNull: false },
             month: { type: DataTypes.INTEGER(), allowNull: false },
             year: { type: DataTypes.INTEGER(), allowNull: false }
@@ -31,6 +31,5 @@ module.exports = (sequelize, DataTypes) => {
             modelName: "payment_methods"
         }
     )
-    // PaymentType.sync()
     return PaymentType
 }

@@ -1,53 +1,53 @@
 const { Router } = require("express")
-const PaymentType = require("../controllers/PaymentTypeController")
+const PaymentMethod = require("../controllers/PaymentMethodController")
 const yupValidation = require("../middlewares/yupValidation")
 const {
-    paymentTypeSchema,
-    paymentTypeIdSchema
-} = require("../schemas/paymentTypeSchema")
+    paymentMethodSchema,
+    paymentMethodIdSchema
+} = require("../schemas/paymentMethodSchema")
 const { idSchema } = require("../schemas/utilsSchema")
 const validateToken = require("../middlewares/validateToken")
 const adminVerify = require("../middlewares/adminVerify")
 
-class PaymentTypeRouter {
+class PaymentMethodRouter {
     constructor () {
         this.routes = Router()
 
-        this.paymentType = new PaymentType()
+        this.paymentMethod = new PaymentMethod()
     }
 
     setup () {
         //Private for admins
         this.routes.post(
-            "/paymenttype",
+            "/paymentmethod",
             validateToken,
             adminVerify,
-            yupValidation(paymentTypeSchema),
-            this.paymentType.create
+            yupValidation(paymentMethodSchema),
+            this.paymentMethod.create
         )
         this.routes.get(
-            "/paymenttype",
+            "/paymentmethod",
             validateToken,
             adminVerify,
-            this.paymentType.getAll
+            this.paymentMethod.getAll
         )
         this.routes.put(
-            "/paymenttype/:id",
+            "/paymentmethod/:id",
             validateToken,
             adminVerify,
-            yupValidation(paymentTypeIdSchema),
-            this.paymentType.update
+            yupValidation(paymentMethodIdSchema),
+            this.paymentMethod.update
         )
         this.routes.delete(
-            "/paymenttype/:id",
+            "/paymentmethod/:id",
             validateToken,
             adminVerify,
             yupValidation(idSchema),
-            this.paymentType.destroy
+            this.paymentMethod.destroy
         )
 
         return this.routes
     }
 }
 
-module.exports = PaymentTypeRouter
+module.exports = PaymentMethodRouter
