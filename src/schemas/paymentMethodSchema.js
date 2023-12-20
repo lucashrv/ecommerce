@@ -7,7 +7,6 @@ const paymentMethodSchema = ({
         code: yup.number().positive().moreThan(0).required(),
         month: yup.number().positive().moreThan(0).required(),
         year: yup.number().positive().moreThan(0).required(),
-        user_id: yup.number().positive().moreThan(0).required(),
         payment_type_id: yup.number().positive().moreThan(0).required()
     })
 })
@@ -22,7 +21,6 @@ const paymentMethodIdSchema = ({
         code: yup.number().positive().moreThan(0).required(),
         month: yup.number().positive().moreThan(0).required(),
         year: yup.number().positive().moreThan(0).required(),
-        user_id: yup.number().positive().moreThan(0).required(),
         payment_type_id: yup.number().positive().moreThan(0).required()
     })
 })

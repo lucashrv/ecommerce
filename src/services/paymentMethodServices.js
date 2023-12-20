@@ -15,7 +15,7 @@ module.exports = new (class paymentMethod {
         const { payment_type_id } = req.body
 
         const paymentType = await handleSearchOne(payment_type, payment_type_id)
-        handleError(!paymentType, "Método de pagamento não encontrado")
+        handleError(!paymentType, "Tipo de pagamento não encontrado")
 
         return await handleCreate(payment_methods, {
             ...req.body,
@@ -29,7 +29,8 @@ module.exports = new (class paymentMethod {
     }
 
     async update(req) {
-        const { id, payment_type_id } = req.params
+        const { id } = req.params
+        const { payment_type_id } = req.body
 
         const paymentMethod = await handleSearchOne(payment_methods, id)
         handleError(!paymentMethod, "Método de pagamento não encontrado")
