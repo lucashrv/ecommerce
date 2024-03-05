@@ -30,6 +30,12 @@ const userNameSchema = ({
     })
 })
 
+const userBalanceSchema = ({
+    body: yup.object({
+        balance: yup.number().required()
+    })
+})
+
 const userIdSchema = ({
     params: yup.object({
         id: yup.number().integer().positive().required()
@@ -41,5 +47,6 @@ module.exports = {
     userLoginSchema,
     userPassSchema,
     userNameSchema,
-    userIdSchema
+    userIdSchema,
+    userBalanceSchema
 }

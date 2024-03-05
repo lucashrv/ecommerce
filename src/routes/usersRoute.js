@@ -6,7 +6,8 @@ const {
     userLoginSchema,
     userPassSchema,
     userNameSchema,
-    userIdSchema
+    userIdSchema,
+    userBalanceSchema
 } = require("../schemas/userSchema")
 const validateToken = require("../middlewares/validateToken")
 const adminVerify = require("../middlewares/adminVerify")
@@ -49,6 +50,12 @@ class UsersRoute {
             validateToken,
             adminVerify,
             this.userController.findUser
+        )
+        this.routes.patch(
+            "/user/balance/:id?",
+            validateToken,
+            yupValidation(userBalanceSchema),
+            this.userController.addBalance
         )
         this.routes.delete(
             "/user/:id",

@@ -19,7 +19,7 @@ class UserController {
 
             res.status(200).json({
                 message: "Autenticado com sucesso",
-                token
+                auth: token
             })
         } catch (err) {
             res.status(500).json({ error: err.message })
@@ -54,6 +54,19 @@ class UserController {
             await usersServices.changeName(req)
 
             return res.status(200).json({ message: "Nome alterado" })
+        } catch (err) {
+            return res.status(500).json({ error: err.message })
+        }
+    }
+
+    async addBalance(req, res) {
+        try {
+            const balance = await usersServices.addBalance(req)
+
+            return res.status(200).json({
+                message: "Transação efetuada!",
+                ...balance
+            })
         } catch (err) {
             return res.status(500).json({ error: err.message })
         }

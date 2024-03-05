@@ -36,7 +36,7 @@ module.exports = new (class UserService {
 
         const user = await handleSearch(users, { email })
         const checkPassword = await bcrypt.compare(password, user.password)
-        handleError(!user || !checkPassword, "Email ou senha inválidos")
+        handleError(!user || !checkPassword, "Email ou senha inválido(s)")
 
         const token = jwt.sign(
             { id: user.id },
@@ -44,7 +44,12 @@ module.exports = new (class UserService {
             { expiresIn: "3d" }
         )
 
-        return token
+        return {
+            token,
+            email: user.email,
+            name: user.name,
+            role: user.role
+        }
     }
 
     async getUser(id) {
@@ -86,6 +91,37 @@ module.exports = new (class UserService {
         handleError(!user, `Usuário não encontrado`)
 
         await users.update({ ...req.body }, { where: { id } })
+    }
+
+    async addBalance(req) {
+        const { id: userId } = req.connectedUser
+        const { id } = req.params
+        const { balance } = req.body
+
+        const user = await handleSearchOne(users, userId)
+        handleError(!user, `Usuário não encontrado`)
+
+        const changeIdBalance = user.role === "admin" && !!id ? id : userId
+
+        handleError(
+            !!id && user.role === "user",
+            "Você não tem permissão para adicionar saldo de outros usuários"
+        )
+
+        const changeUser =
+            user.role === "admin" && !!id ?
+            await handleSearchOne(users, id) :
+            user
+
+        await users.update({
+            balance: changeUser.balance + balance
+        }, { where: { id: changeIdBalance } })
+
+        return {
+            oldBalance: Number(changeUser.balance.toFixed(2)),
+            addBalance: balance,
+            newBalance: Number((changeUser.balance + balance).toFixed(2))
+        }
     }
 
     async destroy(req) {

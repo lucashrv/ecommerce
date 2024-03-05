@@ -17,8 +17,8 @@ module.exports = (sequelize, DataTypes) => {
             name: { type: DataTypes.STRING(50), allowNull: false },
             email: { type: DataTypes.STRING(50), allowNull: false },
             password: { type: DataTypes.STRING(), allowNull: false },
-            role: { type: DataTypes.STRING(10), allowNull: false, defaultValue: 'user' },
-            // balance: { type: DataTypes.FLOAT(), allowNull: true, defaultValue: 0 }
+            role: { type: DataTypes.STRING(10), allowNull: true, defaultValue: 'user' },
+            balance: { type: DataTypes.FLOAT(), allowNull: true, defaultValue: 0 }
         },
         {
             sequelize,
