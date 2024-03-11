@@ -1,26 +1,27 @@
 const yup = require("../services/TranslationsYup")
 
-const userRegisterSchema = ({
+const userLoginSchema = ({
     body: yup.object({
-        name: yup.string(50).required().min(3).max(50),
-        email: yup.string(50).email().required().min(3).max(50),
-        password: yup.string().required().min(8),
-        confirmPassword: yup.string().required().min(8)
+        email: yup.string(40).email().min(1),
+        password: yup.string().min(8)
     })
 })
 
-const userLoginSchema = ({
+const userSignUpSchema = ({
     body: yup.object({
-        email: yup.string(50).email().min(1).max(50),
-        password: yup.string().min(8)
+        name: yup.string(40).min(1),
+        email: yup.string(40).email().min(1),
+        password: yup.string(30).min(8),
+        confirmPassword: yup.string(30).min(8),
+        role: yup.string().oneOf(['user', 'admin']).notRequired()
     })
 })
 
 const userPassSchema = ({
     body: yup.object({
-        currentPassword: yup.string().required().min(8),
-        newPassword: yup.string().required().min(8),
-        confirmPassword: yup.string().required().min(8)
+        currentPassword: yup.string().min(8),
+        newPassword: yup.string().min(8),
+        confirmPassword: yup.string().min(8)
     })
 })
 
@@ -43,7 +44,7 @@ const userIdSchema = ({
 })
 
 module.exports = {
-    userRegisterSchema,
+    userSignUpSchema,
     userLoginSchema,
     userPassSchema,
     userNameSchema,

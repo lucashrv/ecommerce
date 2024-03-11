@@ -12,13 +12,13 @@ const {
 } = require("./handleServices/handleUtils")
 
 module.exports = new (class UserService {
-    async register(body) {
+    async signUp(body) {
         const { email, password, confirmPassword } = body
 
-        handleError(password !== confirmPassword, 'Senhas não correspondem')
+        handleError(password !== confirmPassword, 'Senhas não correspondem', 400)
 
         const userExists = await handleSearch(users, { email })
-        handleError(userExists, "Email já cadastrado")
+        handleError(userExists, "Email já cadastrado", 422)
 
         const salt = await bcrypt.genSalt(12)
         const hash = await bcrypt.hash(password, salt)
@@ -36,7 +36,7 @@ module.exports = new (class UserService {
 
         const user = await handleSearch(users, { email })
         const checkPassword = await bcrypt.compare(password, user.password)
-        handleError(!user || !checkPassword, "Email ou senha inválido(s)", 400)
+        handleError(!user || !checkPassword, "Email ou senha incorreto(s)", 400)
 
         const token = jwt.sign(
             { id: user.id },

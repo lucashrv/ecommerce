@@ -2,14 +2,18 @@ const usersServices = require("../services/usersServices")
 
 class UserController {
 
-    async register(req, res) {
+    async signUp(req, res) {
         try {
-            const user = await usersServices.register(req.body)
+            const user = await usersServices.signUp(req.body)
             user["password"] = undefined
 
-            res.status(201).json(user)
+            return res.status(201).json({
+                message: "Usuário criado com sucesso",
+                user
+            })
         } catch (err) {
-            res.status(500).json({ error: err.message })
+            const statusCode = err.status ? err.status : 500
+            return res.status(statusCode).json({ error: err.message })
         }
     }
 
@@ -17,7 +21,7 @@ class UserController {
         try {
             const token = await usersServices.login(req.body)
 
-            res.status(200).json({
+            return res.status(200).json({
                 message: "Autenticado com sucesso",
                 auth: token,
             })

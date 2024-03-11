@@ -2,7 +2,7 @@ const { Router } = require("express")
 const UserController = require("../controllers/UserController")
 const yupValidation = require("../middlewares/yupValidation")
 const {
-    userRegisterSchema,
+    userSignUpSchema,
     userLoginSchema,
     userPassSchema,
     userNameSchema,
@@ -23,15 +23,15 @@ class UsersRoute {
         //Public
         this.routes.post(
             "/user/signup",
-            yupValidation(userRegisterSchema),
-            this.userController.register
+            yupValidation(userSignUpSchema),
+            this.userController.signUp
         )
         this.routes.post(
             "/user/login",
             yupValidation(userLoginSchema),
             this.userController.login
         )
-        //Private for all users and admins
+        //Private auth
         this.routes.patch(
             "/user",
             validateToken,
@@ -44,7 +44,7 @@ class UsersRoute {
             yupValidation(userNameSchema),
             this.userController.changeName
         )
-        //Private for admins
+        //Private admins
         this.routes.get(
             "/user/:id",
             validateToken,
