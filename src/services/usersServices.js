@@ -36,7 +36,7 @@ module.exports = new (class UserService {
 
         const user = await handleSearch(users, { email })
         const checkPassword = await bcrypt.compare(password, user.password)
-        handleError(!user || !checkPassword, "Email ou senha inválido(s)")
+        handleError(!user || !checkPassword, "Email ou senha inválido(s)", 400)
 
         const token = jwt.sign(
             { id: user.id },
@@ -46,9 +46,7 @@ module.exports = new (class UserService {
 
         return {
             token,
-            email: user.email,
-            name: user.name,
-            role: user.role
+            name: user.name
         }
     }
 

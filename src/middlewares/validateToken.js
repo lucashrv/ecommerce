@@ -14,7 +14,7 @@ const validateToken = (req, res, next) => {
         next()
 
     } catch (err) {
-        return res.status(400).json({ error: "Token invalido" })
+        return res.status(403).json({ error: "Token inválido" })
     }
 }
 

@@ -4,9 +4,12 @@ class ProductController {
 
     async create(req, res) {
         try {
-            const product = await productsServices.create(req)
+            const create = await productsServices.create(req)
 
-            res.status(201).json(product)
+            res.status(201).json({
+                message: 'Produto criado com sucesso',
+                product: create
+            })
         } catch (err) {
             res.status(500).json({ error: err.message })
         }
@@ -36,7 +39,10 @@ class ProductController {
         try {
             const destroy = await productsServices.destroy(req)
 
-            return res.status(200).json(destroy)
+            return res.status(200).json({
+                message: 'Produto deletado com sucesso',
+                product: destroy
+            })
         } catch (err) {
             return res.status(500).json({ error: err.message })
         }

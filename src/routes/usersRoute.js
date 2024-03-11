@@ -22,7 +22,7 @@ class UsersRoute {
     setup () {
         //Public
         this.routes.post(
-            "/user/register",
+            "/user/signup",
             yupValidation(userRegisterSchema),
             this.userController.register
         )

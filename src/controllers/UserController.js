@@ -19,10 +19,11 @@ class UserController {
 
             res.status(200).json({
                 message: "Autenticado com sucesso",
-                auth: token
+                auth: token,
             })
         } catch (err) {
-            res.status(500).json({ error: err.message })
+            const statusCode = err.status ? err.status : 500
+            return res.status(statusCode).json({ error: err.message })
         }
     }
 

@@ -14,7 +14,10 @@ module.exports = new (class App {
     }
 
     middlewares() {
-        this.app.use(cors())
+        this.app.use(cors({
+            origin: ['http://localhost:3001'],
+            methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
+        }))
 
         this.app.use(express.json({ limit: "100mb" }))
 

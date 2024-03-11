@@ -51,9 +51,16 @@ class handleUtils {
     }
   };
 
-  handleError = (verify, err) => {
-    if (verify) throw new Error(err);
-  };
+  // handleError = (verify, err) => {
+  //   if (verify) throw new Error(err);
+  // };
+  handleError(verify, message, status) {
+    if (verify) {
+      const error = new Error(message);
+      error.status = status || 500;
+      throw error;
+    }
+  }
 
   handleEveryError = (verify, err) => {
     const verifyResult = verify.every((elem) => {

@@ -60,6 +60,6 @@ module.exports = new (class UserService {
 
         await handleDestroy(products, { id })
 
-        return { "Produto deletado": { ...product } }
+        return { ...product }
     }
 })
