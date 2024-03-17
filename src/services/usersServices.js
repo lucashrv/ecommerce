@@ -15,10 +15,10 @@ module.exports = new (class UserService {
     async signUp(body) {
         const { email, password, confirmPassword } = body
 
-        handleError(password !== confirmPassword, 'Senhas não correspondem', 400)
+        handleError(password !== confirmPassword, 'Senhas não correspondem!', 400)
 
         const userExists = await handleSearch(users, { email })
-        handleError(userExists, "Email já cadastrado", 422)
+        handleError(userExists, "Email já cadastrado!", 422)
 
         const salt = await bcrypt.genSalt(12)
         const hash = await bcrypt.hash(password, salt)
@@ -35,8 +35,10 @@ module.exports = new (class UserService {
         const { email, password } = body
 
         const user = await handleSearch(users, { email })
+        handleError(!user, "Email inválido!", 400)
+
         const checkPassword = await bcrypt.compare(password, user.password)
-        handleError(!user || !checkPassword, "Email ou senha incorreto(s)", 400)
+        handleError(!checkPassword, "Senha inválida!", 400)
 
         const token = jwt.sign(
             { id: user.id },
@@ -52,7 +54,7 @@ module.exports = new (class UserService {
 
     async getUser(id) {
         const user = await handleSearchOne(users, id)
-        handleError(!user, `Usuário não encontrado`)
+        handleError(!user, `Usuário não encontrado!`, 404)
 
         return user
     }
@@ -67,14 +69,14 @@ module.exports = new (class UserService {
 
         handleError(
             newPassword !== confirmPassword || currentPassword === newPassword,
-            'Senhas não correspondem'
+            'Senhas não correspondem!'
         )
 
         const user = await handleSearchOne(users, id)
-        handleError(!user, `Usuário não encontrado`)
+        handleError(!user, `Usuário não encontrado!`)
 
         const passCompare = await bcrypt.compare(currentPassword, user.password)
-        handleError(!passCompare, "Senha atual inválida");
+        handleError(!passCompare, "Senha atual inválida!");
 
         const salt = await bcrypt.genSalt(12)
         const hash = await bcrypt.hash(newPassword, salt)
@@ -86,7 +88,7 @@ module.exports = new (class UserService {
         const { id } = req.connectedUser
 
         const user = await handleSearchOne(users, id)
-        handleError(!user, `Usuário não encontrado`)
+        handleError(!user, `Usuário não encontrado!`)
 
         await users.update({ ...req.body }, { where: { id } })
     }
@@ -97,13 +99,13 @@ module.exports = new (class UserService {
         const { balance } = req.body
 
         const user = await handleSearchOne(users, userId)
-        handleError(!user, `Usuário não encontrado`)
+        handleError(!user, `Usuário não encontrado!`)
 
         const changeIdBalance = user.role === "admin" && !!id ? id : userId
 
         handleError(
             !!id && user.role === "user",
-            "Você não tem permissão para adicionar saldo de outros usuários"
+            "Você não tem permissão para adicionar saldo de outros usuários!"
         )
 
         const changeUser =
@@ -126,7 +128,7 @@ module.exports = new (class UserService {
         const { id } = req.params
 
         const user = await handleSearchOne(users, id)
-        handleError(!user, "Usuário inexistente")
+        handleError(!user, "Usuário inexistente!")
 
         await handleDestroy(users, { id })
     }

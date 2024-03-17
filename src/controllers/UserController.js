@@ -8,7 +8,7 @@ class UserController {
             user["password"] = undefined
 
             return res.status(201).json({
-                message: "Usuário criado com sucesso",
+                message: "Usuário criado com sucesso!",
                 user
             })
         } catch (err) {
@@ -22,7 +22,7 @@ class UserController {
             const token = await usersServices.login(req.body)
 
             return res.status(200).json({
-                message: "Autenticado com sucesso",
+                message: "Autenticado com sucesso!",
                 auth: token,
             })
         } catch (err) {
@@ -48,7 +48,7 @@ class UserController {
         try {
             await usersServices.changePassword(req)
 
-            res.status(200).json({ message: "Senha alterada" })
+            res.status(200).json({ message: "Senha alterada!" })
         } catch (err) {
             res.status(500).json({ error: err.message })
         }
@@ -58,7 +58,7 @@ class UserController {
         try {
             await usersServices.changeName(req)
 
-            return res.status(200).json({ message: "Nome alterado" })
+            return res.status(200).json({ message: "Nome alterado!" })
         } catch (err) {
             return res.status(500).json({ error: err.message })
         }
@@ -81,7 +81,7 @@ class UserController {
         try {
             await usersServices.destroy(req)
 
-            return res.status(200).json({ message: "Usuário deletado" })
+            return res.status(200).json({ message: "Usuário deletado!" })
         } catch (err) {
             return res.status(500).json({ error: err.message })
         }
