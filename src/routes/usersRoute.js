@@ -44,6 +44,11 @@ class UsersRoute {
             yupValidation(userNameSchema),
             this.userController.changeName
         )
+        this.routes.get(
+            "/user/role",
+            validateToken,
+            this.userController.findUserRole
+        )
         //Private admins
         this.routes.get(
             "/user/:id",

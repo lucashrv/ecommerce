@@ -31,6 +31,17 @@ class UserController {
         }
     }
 
+    async findUserRole(req, res) {
+        try {
+            const user = await usersServices.findUserRole(req)
+
+            res.status(200).json({ role: user.role })
+        } catch (err) {
+            const statusCode = err.status ? err.status : 500
+            res.status(statusCode).json({ error: err.message })
+        }
+    }
+
     async findUser(req, res) {
         const { id } = req.params
 

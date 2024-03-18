@@ -52,6 +52,15 @@ module.exports = new (class UserService {
         }
     }
 
+    async findUserRole(req) {
+        const { id } = req.connectedUser
+
+        const user = await handleSearchOne(users, id)
+        handleError(!user, `Usuário não encontrado!`, 404)
+
+        return user
+    }
+
     async getUser(id) {
         const user = await handleSearchOne(users, id)
         handleError(!user, `Usuário não encontrado!`, 404)
