@@ -41,6 +41,15 @@ class UserController {
             res.status(statusCode).json({ error: err.message })
         }
     }
+    async findAllPaginateSearch(req, res) {
+        try {
+            const users = await usersServices.findAllPaginateSearch(req)
+
+            res.status(200).json(users)
+        } catch (err) {
+            res.status(500).json({ error: err.message })
+        }
+    }
 
     async findUser(req, res) {
         const { id } = req.params

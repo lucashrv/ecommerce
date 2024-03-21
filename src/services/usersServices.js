@@ -61,6 +61,26 @@ module.exports = new (class UserService {
         return user
     }
 
+    async findAllPaginateSearch(req) {
+        const {
+            currentPage = 1,
+            limit = 10,
+            search,
+            order = 'name',
+            orderType = 'ASC'
+        } = req.query;
+        const offset = (currentPage - 1) * limit
+
+        const items = await users.findAndCountAll({
+            where: {},
+            limit: parseInt(limit),
+            offset,
+            order: [[order, orderType]]
+        })
+
+        return { currentPage, ...items }
+    }
+
     async getUser(id) {
         const user = await handleSearchOne(users, id)
         handleError(!user, `Usuário não encontrado!`, 404)

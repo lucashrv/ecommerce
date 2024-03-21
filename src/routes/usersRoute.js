@@ -51,6 +51,18 @@ class UsersRoute {
         )
         //Private admins
         this.routes.get(
+            "/users",
+            validateToken,
+            adminVerify,
+            this.userController.findAllPaginateSearch
+        )
+        this.routes.get(
+            "/user",
+            validateToken,
+            adminVerify,
+            this.userController.findUser
+        )
+        this.routes.get(
             "/user/:id",
             validateToken,
             adminVerify,
