@@ -21,13 +21,34 @@ class UserController {
         try {
             const token = await usersServices.login(req.body)
 
-            return res.status(200).json({
-                message: "Autenticado com sucesso!",
-                auth: token,
-            })
+            res.cookie('token', token.token, { httpOnly: true })
+
+            return res.status(200).json({ message: "Autenticado com sucesso!" })
         } catch (err) {
             const statusCode = err.status ? err.status : 500
             return res.status(statusCode).json({ error: err.message })
+        }
+    }
+
+    async logout(req, res) {
+        try {
+            await usersServices.logout(res)
+
+            return res.status(200).json({ message: 'Você saiu' })
+        } catch (err) {
+            const statusCode = err.status ? err.status : 500
+            return res.status(statusCode).json({ error: err.message })
+        }
+    }
+
+    async checkAuth(req, res) {
+        try {
+            const auth = await usersServices.checkAuth(req)
+
+            res.status(200).json(auth)
+        } catch (err) {
+            const statusCode = err.status ? err.status : 500
+            res.status(statusCode).json({ error: err.message })
         }
     }
 
@@ -41,6 +62,7 @@ class UserController {
             res.status(statusCode).json({ error: err.message })
         }
     }
+
     async findAllPaginateSearch(req, res) {
         try {
             const users = await usersServices.findAllPaginateSearch(req)

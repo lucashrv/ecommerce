@@ -43,13 +43,27 @@ module.exports = new (class UserService {
         const token = jwt.sign(
             { id: user.id },
             process.env.SECRET,
-            { expiresIn: "3d" }
+            { expiresIn: "365d" }
         )
 
         return {
             token,
             name: user.name
         }
+    }
+
+    async logout(res) {
+        return res.clearCookie('token')
+    }
+
+    async checkAuth(req) {
+        const token = req.cookies.token;
+
+        const auth = token
+            ? jwt.verify(token, process.env.SECRET)
+            : false
+
+        return { auth: !!auth }
     }
 
     async findUserRole(req) {
