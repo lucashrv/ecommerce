@@ -31,16 +31,7 @@ class UsersRoute {
             yupValidation(userLoginSchema),
             this.userController.login
         )
-        this.routes.get(
-            "/user/checkauth",
-            this.userController.checkAuth
-        )
         //Private auth
-        this.routes.post(
-            "/user/logout",
-            validateToken,
-            this.userController.logout
-        )
         this.routes.patch(
             "/user",
             validateToken,

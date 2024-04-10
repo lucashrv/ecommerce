@@ -21,34 +21,13 @@ class UserController {
         try {
             const token = await usersServices.login(req.body)
 
-            res.cookie('token', token.token, { httpOnly: true })
-
-            return res.status(200).json({ message: "Autenticado com sucesso!" })
+            return res.status(200).json({
+                message: "Autenticado com sucesso!",
+                auth: token,
+            })
         } catch (err) {
             const statusCode = err.status ? err.status : 500
             return res.status(statusCode).json({ error: err.message })
-        }
-    }
-
-    async logout(req, res) {
-        try {
-            await usersServices.logout(res)
-
-            return res.status(200).json({ message: 'Você saiu' })
-        } catch (err) {
-            const statusCode = err.status ? err.status : 500
-            return res.status(statusCode).json({ error: err.message })
-        }
-    }
-
-    async checkAuth(req, res) {
-        try {
-            const auth = await usersServices.checkAuth(req)
-
-            res.status(200).json(auth)
-        } catch (err) {
-            const statusCode = err.status ? err.status : 500
-            res.status(statusCode).json({ error: err.message })
         }
     }
 

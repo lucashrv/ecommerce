@@ -10,6 +10,7 @@ const {
     handleVerifyReturned,
     handleSearch,
 } = require("./handleServices/handleUtils")
+const Sequelize = require('sequelize')
 
 module.exports = new (class UserService {
     async signUp(body) {
@@ -52,20 +53,6 @@ module.exports = new (class UserService {
         }
     }
 
-    async logout(res) {
-        return res.clearCookie('token')
-    }
-
-    async checkAuth(req) {
-        const token = req.cookies.token;
-
-        const auth = token
-            ? jwt.verify(token, process.env.SECRET)
-            : false
-
-        return { auth: !!auth }
-    }
-
     async findUserRole(req) {
         const { id } = req.connectedUser
 
@@ -77,22 +64,45 @@ module.exports = new (class UserService {
 
     async findAllPaginateSearch(req) {
         const {
-            currentPage = 1,
+            page = 1,
             limit = 10,
             search,
             order = 'name',
             orderType = 'ASC'
         } = req.query;
-        const offset = (currentPage - 1) * limit
+        const offset = (page - 1) * limit
 
-        const items = await users.findAndCountAll({
-            where: {},
+        // Pagination / Search
+        const usersQuery = await users.findAndCountAll({
+            where: {
+                [Sequelize.Op.or]: [
+                    Sequelize.where(
+                        Sequelize.fn('LOWER', Sequelize.col('email')),
+                        {
+                            [Sequelize.Op.like]: `%${search.toLowerCase()}%`
+                        }
+                    ),
+                    Sequelize.where(
+                        Sequelize.fn('LOWER', Sequelize.col('name')),
+                        {
+                            [Sequelize.Op.like]: `%${search.toLowerCase()}%`
+                        }
+                    ),
+                    Sequelize.where(
+                        Sequelize.fn('LOWER', Sequelize.col('role')),
+                        {
+                            [Sequelize.Op.like]: `%${search.toLowerCase()}%`
+                        }
+                    )
+                ]
+            },
             limit: parseInt(limit),
             offset,
-            order: [[order, orderType]]
+            order: [[order, orderType]],
+            attributes: { exclude: ['password'] }
         })
 
-        return { currentPage, ...items }
+        return { page, ...usersQuery, }
     }
 
     async getUser(id) {

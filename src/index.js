@@ -2,7 +2,6 @@ const express = require("express")
 const cors = require("cors")
 const routes = require("./routes/routes")
 const yup = require("./services/TranslationsYup")
-const cookieParser = require('cookie-parser')
 require("dotenv").config()
 
 module.exports = new (class App {
@@ -18,10 +17,7 @@ module.exports = new (class App {
         this.app.use(cors({
             origin: ['http://localhost:3001'],
             methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
-            credentials: true
         }))
-
-        this.app.use(cookieParser())
 
         this.app.use(express.json({ limit: "100mb" }))
 
