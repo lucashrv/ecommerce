@@ -7,7 +7,8 @@ const {
     userPassSchema,
     userNameSchema,
     userIdSchema,
-    userBalanceSchema
+    userBalanceSchema,
+    userUpdateSchema
 } = require("../schemas/userSchema")
 const validateToken = require("../middlewares/validateToken")
 const adminVerify = require("../middlewares/adminVerify")
@@ -33,7 +34,7 @@ class UsersRoute {
         )
         //Private auth
         this.routes.patch(
-            "/user",
+            "/user/changePassword",
             validateToken,
             yupValidation(userPassSchema),
             this.userController.changePassword
@@ -57,12 +58,6 @@ class UsersRoute {
             this.userController.findAllPaginateSearch
         )
         this.routes.get(
-            "/user",
-            validateToken,
-            adminVerify,
-            this.userController.findUser
-        )
-        this.routes.get(
             "/user/:id",
             validateToken,
             adminVerify,
@@ -73,6 +68,13 @@ class UsersRoute {
             validateToken,
             yupValidation(userBalanceSchema),
             this.userController.addBalance
+        )
+        this.routes.put(
+            "/user/:id",
+            validateToken,
+            adminVerify,
+            yupValidation(userUpdateSchema),
+            this.userController.update
         )
         this.routes.delete(
             "/user/:id",

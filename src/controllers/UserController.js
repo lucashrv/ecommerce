@@ -53,10 +53,8 @@ class UserController {
     }
 
     async findUser(req, res) {
-        const { id } = req.params
-
         try {
-            const user = await usersServices.getUser(id)
+            const user = await usersServices.getUser(req)
             user["password"] = undefined
 
             res.status(200).json(user)
@@ -95,6 +93,17 @@ class UserController {
             })
         } catch (err) {
             return res.status(500).json({ error: err.message })
+        }
+    }
+
+    async update(req, res) {
+        try {
+            await usersServices.update(req)
+
+            return res.status(200).json({ message: "Usuário foi editado!" })
+        } catch (err) {
+            const statusCode = err.status ? err.status : 500
+            return res.status(statusCode).json({ error: err.message })
         }
     }
 

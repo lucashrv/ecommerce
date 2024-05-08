@@ -12,6 +12,7 @@ const userSignUpSchema = ({
         name: yup.string(40).min(1),
         email: yup.string(40).email().min(1),
         password: yup.string(30).min(8),
+        balance: yup.number().notRequired(),
         confirmPassword: yup.string(30).min(8),
         role: yup.string().oneOf(['user', 'admin']).notRequired()
     })
@@ -43,11 +44,24 @@ const userIdSchema = ({
     })
 })
 
+const userUpdateSchema = ({
+    params: yup.object({
+        id: yup.number().integer().positive().required()
+    }),
+    body: yup.object({
+        name: yup.string(40).min(1),
+        email: yup.string(40).email().min(1),
+        role: yup.string().oneOf(['user', 'admin']).notRequired(),
+        balance: yup.number().required()
+    })
+})
+
 module.exports = {
     userSignUpSchema,
     userLoginSchema,
     userPassSchema,
     userNameSchema,
     userIdSchema,
-    userBalanceSchema
+    userBalanceSchema,
+    userUpdateSchema
 }

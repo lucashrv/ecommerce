@@ -72,7 +72,7 @@ module.exports = new (class UserService {
         } = req.query;
         const offset = (page - 1) * limit
 
-        // Pagination / Search
+        // Pagination / Search => 'ILIKE'
         const usersQuery = await users.findAndCountAll({
             where: {
                 [Sequelize.Op.or]: [
@@ -105,11 +105,21 @@ module.exports = new (class UserService {
         return { page, ...usersQuery, }
     }
 
-    async getUser(id) {
-        const user = await handleSearchOne(users, id)
-        handleError(!user, `Usuário não encontrado!`, 404)
+    async getUser(req) {
+        const { id } = req.params
+        const { id: connectedUserId } = req.connectedUser
 
-        return user
+        const connectedUser = await handleSearchOne(users, connectedUserId)
+        handleError(
+            connectedUser.role !== 'admin' && connectedUser.id !== ~~id,
+            `Sem permissão de acesso!`,
+            401
+        )
+
+        const findUser = await handleSearchOne(users, id)
+        handleError(!findUser, `Usuário não encontrado!`, 404)
+
+        return findUser
     }
 
     async changePassword(req) {
@@ -175,6 +185,26 @@ module.exports = new (class UserService {
             addBalance: balance,
             newBalance: Number((changeUser.balance + balance).toFixed(2))
         }
+    }
+
+    async update(req) {
+        const {
+            name,
+            email,
+            role,
+            balance
+        } = req.body
+        const { id } = req.params
+
+        const user = await handleSearchOne(users, id)
+        handleError(!user, `Usuário não encontrado!`, 404)
+
+        await users.update({
+            name,
+            email,
+            role,
+            balance
+        }, { where: { id } })
     }
 
     async destroy(req) {
