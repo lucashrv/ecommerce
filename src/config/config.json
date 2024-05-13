@@ -1,8 +1,8 @@
 {
   "development": {
     "username": "postgres",
-    "password": "Lucas1230",
-    "database": "Ecommerce",
+    "password": "lucas123",
+    "database": "ecommerce",
     "host": "localhost",
     "dialect": "postgres",
     "logging": false
