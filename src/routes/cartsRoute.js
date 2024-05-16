@@ -10,13 +10,13 @@ const validateToken = require("../middlewares/validateToken")
 const adminVerify = require("../middlewares/adminVerify")
 
 class CartsRouter {
-    constructor () {
+    constructor() {
         this.routes = Router()
 
         this.cartsController = new CartsController()
     }
 
-    setup () {
+    setup() {
         // Private for all users and admins
         this.routes.post(
             "/carts",

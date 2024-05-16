@@ -9,13 +9,13 @@ const validateToken = require("../middlewares/validateToken")
 const adminVerify = require("../middlewares/adminVerify")
 
 class PurchaseOrderRouter {
-    constructor () {
+    constructor() {
         this.routes = Router()
 
         this.purchaseOrder = new PurchaseOrder()
     }
 
-    setup () {
+    setup() {
         //Private for admins
         this.routes.post(
             "/purchaseorder",

@@ -10,7 +10,7 @@ const paymentType = require("./paymentType")
 const paymentMethod = require("./paymentMethod")
 
 class IndexRoutes {
-    constructor () {
+    constructor() {
         this.routes = express.Router()
 
         this.users = new users()
@@ -22,7 +22,7 @@ class IndexRoutes {
         this.paymentMethod = new paymentMethod()
     }
 
-    setup () {
+    setup() {
         this.routes.use("/api", this.users.setup())
         this.routes.use("/api", this.categories.setup())
         this.routes.use("/api", this.products.setup())

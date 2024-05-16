@@ -10,13 +10,13 @@ const validateToken = require("../middlewares/validateToken")
 const adminVerify = require("../middlewares/adminVerify")
 
 class PaymentMethodRouter {
-    constructor () {
+    constructor() {
         this.routes = Router()
 
         this.paymentMethod = new PaymentMethod()
     }
 
-    setup () {
+    setup() {
         //Private for admins
         this.routes.post(
             "/paymentmethod",

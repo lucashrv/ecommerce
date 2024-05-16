@@ -26,7 +26,7 @@ module.exports = new (class App {
         this.app.use(express.urlencoded({ limit: "100mb", extended: true }))
     }
 
-    routes () {
+    routes() {
         this.app.use(routes.setup())
     }
 })()

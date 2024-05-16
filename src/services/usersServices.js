@@ -173,8 +173,8 @@ module.exports = new (class UserService {
 
         const changeUser =
             user.role === "admin" && !!id ?
-            await handleSearchOne(users, id) :
-            user
+                await handleSearchOne(users, id) :
+                user
 
         await users.update({
             balance: changeUser.balance + balance

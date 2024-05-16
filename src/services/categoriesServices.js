@@ -9,7 +9,7 @@ const {
 } = require("./handleServices/handleUtils");
 
 module.exports = new (class CategoryService {
-    async create (body) {
+    async create(body) {
         const { name } = body
 
         const searchCategory = await handleSearchAll(categories, { name })

@@ -14,13 +14,13 @@ const validateToken = require("../middlewares/validateToken")
 const adminVerify = require("../middlewares/adminVerify")
 
 class UsersRoute {
-    constructor () {
+    constructor() {
         this.routes = Router()
 
         this.userController = new UserController()
     }
 
-    setup () {
+    setup() {
         //Public
         this.routes.post(
             "/user/signup",

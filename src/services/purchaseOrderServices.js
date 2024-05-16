@@ -12,7 +12,7 @@ const {
 } = require("./handleServices/handleUtils")
 
 module.exports = new (class PurchaseOrderServices {
-    async create (req) {
+    async create(req) {
         const { name } = req.body;
 
         const findOrder = await handleSearchOne(purchase_order, name);
@@ -22,13 +22,13 @@ module.exports = new (class PurchaseOrderServices {
         return await handleCreate(purchase_order, req.body);
     };
 
-    async getAll (req) {
+    async getAll(req) {
         const { id } = req.connectedUser
 
-        const user = await users.findOne({ where: { id }})
+        const user = await users.findOne({ where: { id } })
 
         handleError(!user, "Somente usuários conectados tem permissão!")
 
-        return await purchase_order.findAll({ where: { id }});
+        return await purchase_order.findAll({ where: { id } });
     };
 })

@@ -70,7 +70,7 @@ module.exports = new (class OrderService {
         return createOrder;
     }
 
-    async searchOrder (req) {
+    async searchOrder(req) {
         const { id } = req.connectedUser;
         const searchOrder = req.query;
 
@@ -190,7 +190,7 @@ module.exports = new (class OrderService {
         }
     };
 
-    async update (req) {
+    async update(req) {
         const { id: userId } = req.connectedUser;
         const { id } = req.params;
 
@@ -228,7 +228,7 @@ module.exports = new (class OrderService {
         return order;
     };
 
-    async updateRemoveProduct (req) {
+    async updateRemoveProduct(req) {
         const { id: userId } = req.connectedUser;
         const { id } = req.params;
 

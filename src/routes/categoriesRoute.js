@@ -10,13 +10,13 @@ const validateToken = require("../middlewares/validateToken")
 const adminVerify = require("../middlewares/adminVerify")
 
 class CategoriesRouter {
-    constructor () {
+    constructor() {
         this.routes = Router()
 
         this.categoriesController = new CategoriesController()
     }
 
-    setup () {
+    setup() {
         //Public
         this.routes.get(
             "/categories",
